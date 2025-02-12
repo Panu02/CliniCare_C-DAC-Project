@@ -1,0 +1,52 @@
+package com.clinicare.services;
+import static com.clinicare.dtos.WardDataBackinBean.*;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.clinicare.custom_exception.NoSuchMedicineExistsException;
+import com.clinicare.daos.IDoctorDao;
+import com.clinicare.daos.IEmployeeDao;
+import com.clinicare.daos.IMedicineAssignedDao;
+import com.clinicare.daos.IMedicineDao;
+import com.clinicare.daos.IUserDao;
+import com.clinicare.daos.IWardDao;
+import com.clinicare.dtos.DoctorDataBackinBean;
+import com.clinicare.dtos.MedicineAssignedDataBackinBean;
+import com.clinicare.dtos.WardDataBackinBean;
+import com.clinicare.entities.User;
+import com.clinicare.entities.Ward;
+
+@Service @Transactional
+public class MedicineAssignedServices {
+	@Autowired
+	IUserDao userDao;
+	@Autowired
+	IEmployeeDao employeeDao;
+	@Autowired
+	IWardDao wardDao;
+	@Autowired
+	IMedicineAssignedDao medicineAssingedDao;
+	@Autowired
+	IMedicineDao medicineDao;
+	
+	public void addMedicineToPatient(MedicineAssignedDataBackinBean medicineData) throws NoSuchMedicineExistsException {
+		
+			medicineAssingedDao.addIntoMedicineAssigned(medicineData.getPatId(), medicineData.getMedicineId(), medicineData.getMedicinePrescription(), medicineData.getMedicineQty());
+		
+		
+		
+	}
+	
+	public void removeMedicineOfPatient(int medicineAssignId) {
+		medicineAssingedDao.deleteById(medicineAssignId);
+	}
+	
+	
+	
+	
+
+}

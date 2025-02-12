@@ -1,0 +1,50 @@
+package com.clinicare.services;
+
+import static com.clinicare.dtos.MedicineAssignedDataBackinBean.createAllMedicineList;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.clinicare.daos.IEmployeeDao;
+import com.clinicare.daos.IMedicineAssignedDao;
+import com.clinicare.daos.IMedicineDao;
+import com.clinicare.daos.IUserDao;
+import com.clinicare.daos.IWardDao;
+import com.clinicare.dtos.MedicineAssignedDataBackinBean;
+import com.clinicare.entities.Medicine;
+
+@Service
+@Transactional
+public class MedicineServices {
+	@Autowired
+	IUserDao userDao;
+	@Autowired
+	IEmployeeDao employeeDao;
+	@Autowired
+	IWardDao wardDao;
+	@Autowired
+	IMedicineDao medicineDao;
+	@Autowired
+	IMedicineAssignedDao medicineAssingedDao;
+
+	public List<MedicineAssignedDataBackinBean> getAllMedicines() {
+		List<Medicine> medicine = medicineDao.findAll();
+		List<MedicineAssignedDataBackinBean> medicinesTosend = createAllMedicineList(medicine);
+		return medicinesTosend;
+
+	}
+
+	public int addMedicine(MedicineAssignedDataBackinBean medicineData) {
+		return medicineDao.insertIntoMedicineTable(0, medicineData.getMedicineName(), medicineData.getMedicinePrice());
+
+	}
+
+	public void removeMedicine(int medicineId) {
+		medicineDao.deleteById(medicineId);
+
+	}
+
+}
